@@ -54,6 +54,7 @@ const Travel = () => {
             setTravels((prevtravels) => [...prevtravels, addedtravelr]); 
             setFormData({ driverId: '', vehicleId: '', start: '', end: '', status: '' });
             setIsModalOpen(false); 
+            setselectedTravel(null)
         } catch (error) {
             console.error('Erro ao adicionar viagem:', error);
         }
@@ -86,6 +87,7 @@ const Travel = () => {
             setTravels(newtravels);
             setFormData({ driverId: '', vehicleId: '', start: '', end: '', status: '' });
             setIsModalOpen(false);
+            setselectedTravel(null)
         } catch (error) {
             console.error('Erro ao editar motorista:', error);
         }
@@ -148,7 +150,7 @@ const Travel = () => {
                 setFormData({ driverId: '', vehicleId: '', start: '', end: '', status: '' })
                 setselectedTravel(null)}}>
                 <h2 className="text-lg font-bold mb-4 text-motoraDarkBlue">
-                    {selectedTravel ? 'Editar Motorista' : 'Adicionar Novo Motorista'}
+                    {selectedTravel ? 'Editar Viagem' : 'Adicionar Nova Viagem'}
                 </h2>
                 <form onSubmit={selectedTravel ? handleEditTravel : handleAddTravel}>
                     <div className="mb-4">
@@ -165,7 +167,15 @@ const Travel = () => {
                         <input type="text" id="end" name="end" defaultValue={selectedTravel?.end || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     
                         <label htmlFor="status" className="block text-sm font-medium text-motoraDarkBlue">Status</label>
-                        <input type="text" id="status" name="status" defaultValue={selectedTravel?.status || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <select
+                        id="status"
+                        name="status"
+                        defaultValue={selectedTravel?.status}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                        >
+                        <option value="ongoing">EM ANDAMENTO</option>
+                        <option value="finished">FINALIZADA</option>
+                        </select>
                     </div>
                     <button type="submit" className="mt-2 w-full bg-motoraDarkBlue text-white rounded-md p-2 hover:bg-motoraLightBlue">
                         {selectedTravel ? 'Salvar Alterações' : 'Adicionar'}
