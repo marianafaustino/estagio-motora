@@ -4,9 +4,18 @@ import Footer from './Footer';
 import FloatButton from './FloatButton';
 import ModalAdd from './ModalAdd';
 
-const Vehicle = (stylevh) => {
+const Vehicle = () => {
     const [vehicles, setVehicles] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const [formData, setFormData] = useState({
+        plate: '',
+        type: '',
+        lat: '',
+        lng: '',
+        speed: '',
+        status: ''
+    });
 
     useEffect(() => {
         const fetchVehicles = async () => {
@@ -22,6 +31,7 @@ const Vehicle = (stylevh) => {
         fetchVehicles();
     }, []);
 
+    
     const handleAddVehicle = async (event) => {
         event.preventDefault(); 
 
@@ -43,12 +53,65 @@ const Vehicle = (stylevh) => {
 
             const addedVehicle = await response.json();
             setVehicles((prevVehicles) => [...prevVehicles, addedVehicle]); 
+            setFormData({ plate: '', type: '', lat: '', lng: '', speed: '', status: '' });
             setIsModalOpen(false); 
         } catch (error) {
             console.error('Erro ao adicionar veículo:', error);
         }
     };
 
+    const handleEditVehicle = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const updatedData = Object.fromEntries(formData.entries());
+
+        const updatedVehicle = { ...selectedVehicle, ...updatedData };
+
+        try {
+            const response = await fetch(`http://localhost:3000/vehicles/${selectedVehicle.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedVehicle),
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao editar veículo');
+            }
+
+            const newVehicles = vehicles.map(vehicle =>
+                vehicle.id === selectedVehicle.id ? updatedVehicle : vehicle
+            );
+            setVehicles(newVehicles);
+            setFormData({ plate: '', type: '', lat: '', lng: '', speed: '', status: '' });
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error('Erro ao editar veículo:', error);
+        }
+    };
+
+    const handleDeleteVehicle = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/vehicles/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao excluir veículo');
+            }
+
+            setVehicles((prevVehicles) => prevVehicles.filter(vehicle => vehicle.id !== id));
+        } catch (error) {
+            console.error('Erro ao excluir veículo:', error);
+        }
+    };
+
+    const openEditModal = (vehicle) => {
+        setSelectedVehicle(vehicle);
+        setIsModalOpen(true);
+    };
 
     return (
         <div className="relative overflow-x-auto" style={{height: "70vh"}}>
@@ -74,8 +137,8 @@ const Vehicle = (stylevh) => {
                             <td className="px-6 py-4">{vehicle.lng}</td>
                             <td className="px-6 py-4">{vehicle.speed}</td>
                             <td className="px-6 py-4">{vehicle.status === 'stopped' ? 'PARADO' : vehicle.status === 'moving' ? 'EM MOVIMENTO' : vehicle.status}</td>
-                            <td className="px-6 py-4">{<PencilSquareIcon/>}</td>
-                            <td className="px-6 py-4">{<TrashIcon/>}</td>
+                            <td className="px-6 py-4"><button>{<PencilSquareIcon className='text-gray h-6 w-6' onClick={() => openEditModal(vehicle)}/>}</button></td>
+                            <td className="px-6 py-4"><button>{<TrashIcon className='text-gray h-6 w-6' onClick={() => handleDeleteVehicle(vehicle.id)}/>}</button></td>
                         </tr>
                     ))}
                 </tbody>
@@ -83,16 +146,36 @@ const Vehicle = (stylevh) => {
             <Footer>
                 <FloatButton disabled={false} onClick={() => setIsModalOpen(true)}/>
             </Footer>
-            <ModalAdd isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <h2 className="text-lg font-bold mb-4 text-motoraDarkBlue">Adicionar Novo Veículo</h2>
-                <form onSubmit={handleAddVehicle}>
+            <ModalAdd isOpen={isModalOpen} onClose={() => {
+                setIsModalOpen(false)
+                setFormData({ plate: '', type: '', lat: '', lng: '', speed: '', status: '' })
+                setSelectedVehicle(null)}}>
+                <h2 className="text-lg font-bold mb-4 text-motoraDarkBlue">
+                    {selectedVehicle ? 'Editar Veículo' : 'Adicionar Novo Veículo'}
+                </h2>
+                <form onSubmit={selectedVehicle ? handleEditVehicle : handleAddVehicle}>
                     <div className="mb-4">
                         <label htmlFor="plate" className="block text-sm font-medium text-motoraDarkBlue">Placa</label>
-                        <input type="text" id="plate" name="plate" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="plate" name="plate" required defaultValuevalue={selectedVehicle?.plate || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        
                         <label htmlFor="type" className="block text-sm font-medium text-motoraDarkBlue">Tipo</label>
-                        <input type="text" id="type" name="type" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="type" name="type" required defaultValue={selectedVehicle?.type || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                    
+                        <label htmlFor="lat" className="block text-sm font-medium text-motoraDarkBlue">Latitude</label>
+                        <input type="number" id="lat" name="lat" defaultValue={selectedVehicle?.lat || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                    
+                        <label htmlFor="lng" className="block text-sm font-medium text-motoraDarkBlue">Longitude</label>
+                        <input type="number" id="lng" name="lng" defaultValue={selectedVehicle?.lng || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                    
+                        <label htmlFor="speed" className="block text-sm font-medium text-motoraDarkBlue">Velocidade</label>
+                        <input type="number" id="speed" name="speed" defaultValue={selectedVehicle?.speed || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                    
+                        <label htmlFor="status" className="block text-sm font-medium text-motoraDarkBlue">Status</label>
+                        <input type="text" id="status" name="status" defaultValue={selectedVehicle?.status || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     </div>
-                    <button type="submit" className="mt-2 w-full bg-motoraDarkBlue text-white rounded-md p-2 hover:bg-motoraLightBlue">Adicionar</button>
+                    <button type="submit" className="mt-2 w-full bg-motoraDarkBlue text-white rounded-md p-2 hover:bg-motoraLightBlue">
+                        {selectedVehicle ? 'Salvar Alterações' : 'Adicionar'}
+                    </button>
                 </form>
             </ModalAdd>
         </div>
