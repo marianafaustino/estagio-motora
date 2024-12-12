@@ -156,7 +156,7 @@ const Vehicle = () => {
                 <form onSubmit={selectedVehicle ? handleEditVehicle : handleAddVehicle}>
                     <div className="mb-4">
                         <label htmlFor="plate" className="block text-sm font-medium text-motoraDarkBlue">Placa</label>
-                        <input type="text" id="plate" name="plate" required defaultValuevalue={selectedVehicle?.plate || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="plate" name="plate" required defaultValue={selectedVehicle?.plate || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                         
                         <label htmlFor="type" className="block text-sm font-medium text-motoraDarkBlue">Tipo</label>
                         <input type="text" id="type" name="type" required defaultValue={selectedVehicle?.type || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
