@@ -1,9 +1,9 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 
 const navigation = [
-  { name: 'Veículos', href: '#', current: true },
-  { name: 'Condutores', href: '#', current: false },
-  { name: 'Viagens', href: '#', current: false }
+  { name: 'Veículos', href: '', current: true },
+  { name: 'Motoristas', href: 'morotistas', current: false },
+  { name: 'Viagens', href: 'viagens', current: false }
 ]
 
 function classNames(...classes) {
