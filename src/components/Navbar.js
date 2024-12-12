@@ -1,10 +1,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
-import { useLocation } from 'react-router-dom';
+import { BellAlertIcon } from '@heroicons/react/24/outline';
+import { Link, useLocation } from 'react-router-dom';
 
 const navigation = [
   { name: 'Veículos', href: '/'},
   { name: 'Motoristas', href: '/motoristas'},
-  { name: 'Viagens', href: '/viagens'}
+  { name: 'Viagens', href: '/viagens' }
 ]
 
 function classNames(...classes) {
@@ -29,9 +30,9 @@ export default function Navbar() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     aria-current={location.pathname === item.href ? 'page' : undefined}
                     className={classNames(
                       location.pathname === item.href ? 'bg-motoraDarkBlue text-white' : 'text-motoraDarkBlue hover:bg-motoraLightBlue hover:text-white',
@@ -39,32 +40,17 @@ export default function Navbar() {
                     )}
                   >
                     {item.name}
-                  </a>
+                  </Link>
                 ))}
+                <button
+              type="button">
+                <BellAlertIcon className="h-6 w-6 text-motoraDarkBlue" />
+            </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <DisclosurePanel className="sm:hidden">
-        <div className="space-y-1 px-2 pb-3 pt-2">
-          {navigation.map((item) => (
-            <DisclosureButton
-              key={item.name}
-              as="a"
-              href={item.href}
-              aria-current={location.pathname === item.href ? 'page' : undefined}
-              className={classNames(
-                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium',
-              )}
-            >
-              {item.name}
-            </DisclosureButton>
-          ))}
-        </div>
-      </DisclosurePanel>
     </Disclosure>
   )
 }
