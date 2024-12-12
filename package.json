@@ -8,6 +8,7 @@
     "cra-template": "1.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1"
   },
   "scripts": {
@@ -35,8 +36,8 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.16",
+    "autoprefixer": "^10.x.x",
     "postcss": "^8.x.x",
-    "autoprefixer": "^10.x.x"
+    "tailwindcss": "^3.4.16"
   }
 }

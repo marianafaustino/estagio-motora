@@ -1,9 +1,10 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { useLocation } from 'react-router-dom';
 
 const navigation = [
-  { name: 'Veículos', href: '', current: true },
-  { name: 'Motoristas', href: 'morotistas', current: false },
-  { name: 'Viagens', href: 'viagens', current: false }
+  { name: 'Veículos', href: '/'},
+  { name: 'Motoristas', href: '/motoristas'},
+  { name: 'Viagens', href: '/viagens'}
 ]
 
 function classNames(...classes) {
@@ -11,6 +12,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const location = useLocation();
+
   return (
     <Disclosure as="nav" className="p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -29,9 +32,9 @@ export default function Navbar() {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={location.pathname === item.href ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-motoraDarkBlue text-white' : 'text-motoraDarkBlue hover:bg-motoraLightBlue hover:text-white',
+                      location.pathname === item.href ? 'bg-motoraDarkBlue text-white' : 'text-motoraDarkBlue hover:bg-motoraLightBlue hover:text-white',
                       'rounded-md px-3 py-2 text-sm font-medium',
                     )}
                   >
@@ -51,7 +54,7 @@ export default function Navbar() {
               key={item.name}
               as="a"
               href={item.href}
-              aria-current={item.current ? 'page' : undefined}
+              aria-current={location.pathname === item.href ? 'page' : undefined}
               className={classNames(
                 item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                 'block rounded-md px-3 py-2 text-base font-medium',
