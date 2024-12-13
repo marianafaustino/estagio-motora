@@ -3,6 +3,7 @@ import { BellAlertIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 import socketTravels from '../websocket/socketTravels';
 import socketVehicles from '../websocket/socketVehicles';
+import socketDrivers from '../websocket/socketDrivers';
 import { useState, useEffect } from 'react';
 import ModalAdd from './ModalAdd';
 
@@ -20,32 +21,27 @@ export default function Navbar() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [travels, setTravels] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
-  const [drivers, setDrivers] = useState([]);
   const location = useLocation();
   const [notification, setNotification] = useState([])
 
   useEffect(() => {
+  
     socketTravels.on('travel-created', (data) => {
         data.message = `A viagem ${data.data.id} foi criada.`
         setNotification(prevNotifications => [...prevNotifications, data]);
         console.log('Viagem criada:', data);
-        setTravels((prevTravels) => [...prevTravels, data]); 
     });
 
     socketTravels.on('travel-updated', (data) => {
       data.message = `A viagem ${data.data.id} foi atualizada.`
       setNotification(prevNotifications => [...prevNotifications, data]);
         console.log('Viagem atualizada:', data);
-        setTravels((prevTravels) => [...prevTravels, data]); 
     });
 
     socketTravels.on('travel-deleted', (data) => {
       data.message = `A viagem ${data.data.id} foi excluída.`
       setNotification(prevNotifications => [...prevNotifications, data]);
-        console.log('Viagem deletada:', data);
-        setTravels((prevTravels) => [...prevTravels, data]); 
+        console.log('Viagem deletada:', data); 
     });
 
     socketVehicles.on('vehicle-created', (data) => {
@@ -58,13 +54,30 @@ export default function Navbar() {
     data.message = `O veículo ${data.data.id} foi atualizado.`
     setNotification(prevNotifications => [...prevNotifications, data]);
       console.log('Veículo atualizado:', data);
-      setTravels((prevTravels) => [...prevTravels, data]); 
   });
 
   socketVehicles.on('vehicle-deleted', (data) => {
     data.message = `O veículo ${data.data.id} foi excluído.`
     setNotification(prevNotifications => [...prevNotifications, data]);
       console.log('Veículo excluído:', data);
+  });
+
+  socketDrivers.on('driver-created', (data) => {
+    data.message = `O motorista ${data.data.id} foi criado.`
+    setNotification(prevNotifications => [...prevNotifications, data]);
+    console.log('Motorista criado:', data);
+  });
+
+  socketDrivers.on('driver-updated', (data) => {
+    data.message = `O motorista ${data.data.id} foi atualizado.`
+    setNotification(prevNotifications => [...prevNotifications, data]);
+    console.log('Motorista atualizado:', data);
+  });
+
+  socketDrivers.on('driver-deleted', (data) => {
+    data.message = `O motorista ${data.data.id} foi excluído.`
+    setNotification(prevNotifications => [...prevNotifications, data]);
+    console.log('Motorista excluído:', data);
   });
 
     return () => {
@@ -74,10 +87,12 @@ export default function Navbar() {
         socketVehicles.off('vehicle-created');
         socketVehicles.off('vehicle-updated');
         socketVehicles.off('vehicle-deleted');
+        socketDrivers.off('driver-created'); 
+        socketDrivers.off('driver-updated'); 
+        socketDrivers.off('driver-deleted');
     };
 }, []); 
 
-console.log(notification)
   return (
     <>
     <Disclosure as="nav" className="p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
