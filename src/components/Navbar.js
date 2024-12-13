@@ -2,6 +2,7 @@ import { Disclosure} from '@headlessui/react'
 import { BellAlertIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 import socketTravels from '../websocket/socketTravels';
+import socketVehicles from '../websocket/socketVehicles';
 import { useState, useEffect } from 'react';
 import ModalAdd from './ModalAdd';
 
@@ -47,10 +48,32 @@ export default function Navbar() {
         setTravels((prevTravels) => [...prevTravels, data]); 
     });
 
+    socketVehicles.on('vehicle-created', (data) => {
+      data.message = `O veículo ${data.data.id} foi criado.`
+      setNotification(prevNotifications => [...prevNotifications, data]);
+      console.log('Veículo criado:', data);
+  });
+
+  socketVehicles.on('vehicle-updated', (data) => {
+    data.message = `O veículo ${data.data.id} foi atualizado.`
+    setNotification(prevNotifications => [...prevNotifications, data]);
+      console.log('Veículo atualizado:', data);
+      setTravels((prevTravels) => [...prevTravels, data]); 
+  });
+
+  socketVehicles.on('vehicle-deleted', (data) => {
+    data.message = `O veículo ${data.data.id} foi excluído.`
+    setNotification(prevNotifications => [...prevNotifications, data]);
+      console.log('Veículo excluído:', data);
+  });
+
     return () => {
         socketTravels.off('travel-created');
         socketTravels.off('travel-updated');
         socketTravels.off('travel-deleted');
+        socketVehicles.off('vehicle-created');
+        socketVehicles.off('vehicle-updated');
+        socketVehicles.off('vehicle-deleted');
     };
 }, []); 
 
