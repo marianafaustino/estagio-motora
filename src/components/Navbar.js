@@ -1,6 +1,9 @@
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { Disclosure} from '@headlessui/react'
 import { BellAlertIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
+import socketTravels from '../websocket/socketTravels';
+import { useState, useEffect } from 'react';
+import ModalAdd from './ModalAdd';
 
 const navigation = [
   { name: 'Veículos', href: '/'},
@@ -13,9 +16,47 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [travels, setTravels] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const location = useLocation();
+  const [notification, setNotification] = useState([])
 
+  useEffect(() => {
+    socketTravels.on('travel-created', (data) => {
+        data.message = `A viagem ${data.data.id} foi criada.`
+        setNotification(prevNotifications => [...prevNotifications, data]);
+        console.log('Viagem criada:', data);
+        setTravels((prevTravels) => [...prevTravels, data]); 
+    });
+
+    socketTravels.on('travel-updated', (data) => {
+      data.message = `A viagem ${data.data.id} foi atualizada.`
+      setNotification(prevNotifications => [...prevNotifications, data]);
+        console.log('Viagem atualizada:', data);
+        setTravels((prevTravels) => [...prevTravels, data]); 
+    });
+
+    socketTravels.on('travel-deleted', (data) => {
+      data.message = `A viagem ${data.data.id} foi excluída.`
+      setNotification(prevNotifications => [...prevNotifications, data]);
+        console.log('Viagem deletada:', data);
+        setTravels((prevTravels) => [...prevTravels, data]); 
+    });
+
+    return () => {
+        socketTravels.off('travel-created');
+        socketTravels.off('travel-updated');
+        socketTravels.off('travel-deleted');
+    };
+}, []); 
+
+console.log(notification)
   return (
+    <>
     <Disclosure as="nav" className="p-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
@@ -43,7 +84,7 @@ export default function Navbar() {
                   </Link>
                 ))}
                 <button
-              type="button">
+              type="button" onClick={openModal}>
                 <BellAlertIcon className="h-6 w-6 text-motoraDarkBlue" />
             </button>
               </div>
@@ -52,5 +93,21 @@ export default function Navbar() {
         </div>
       </div>
     </Disclosure>
+
+    <ModalAdd isOpen={isModalOpen} onClose={closeModal}>
+                <h2 className="text-lg font-semibold">Notificações</h2>
+                <div>
+                    {notification.length === 0 ? (
+                        <p>Nenhuma notificação.</p>
+                    ) : (
+                        notification.map((notification, index) => (
+                            <div key={index} className="border-b py-2 text-motoraDarkBlue">
+                                {notification.message}
+                            </div>
+                        ))
+                    )}
+                </div>
+            </ModalAdd>
+    </>
   )
 }
