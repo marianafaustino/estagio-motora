@@ -6,6 +6,7 @@ import socketVehicles from '../websocket/socketVehicles';
 import socketDrivers from '../websocket/socketDrivers';
 import { useState, useEffect } from 'react';
 import ModalAdd from './ModalAdd';
+import { Badge } from '@mui/material';
 
 const navigation = [
   { name: 'Veículos', href: '/'},
@@ -121,9 +122,10 @@ export default function Navbar() {
                     {item.name}
                   </Link>
                 ))}
-                <button
-              type="button" onClick={openModal}>
-                <BellAlertIcon className="h-6 w-6 text-motoraDarkBlue" />
+                <button type="button" onClick={openModal}>
+                  <Badge badgeContent={notification.length} color="primary">
+                    <BellAlertIcon className="h-6 w-6 text-motoraDarkBlue" />
+                  </Badge>
             </button>
               </div>
             </div>
