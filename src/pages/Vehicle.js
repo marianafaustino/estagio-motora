@@ -1,8 +1,8 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
-import Footer from './Footer';
-import FloatButton from './FloatButton';
-import ModalAdd from './ModalAdd';
+import Footer from '../components/Footer';
+import FloatButton from '../components/FloatButton';
+import ModalAdd from '../components/ModalAdd';
 
 const Vehicle = () => {
     const [vehicles, setVehicles] = useState([]);
@@ -54,7 +54,8 @@ const Vehicle = () => {
             const addedVehicle = await response.json();
             setVehicles((prevVehicles) => [...prevVehicles, addedVehicle]); 
             setFormData({ plate: '', type: '', lat: '', lng: '', speed: '', status: '' });
-            setIsModalOpen(false); 
+            setIsModalOpen(false);
+            setSelectedVehicle(null) 
         } catch (error) {
             console.error('Erro ao adicionar veículo:', error);
         }
@@ -87,6 +88,7 @@ const Vehicle = () => {
             setVehicles(newVehicles);
             setFormData({ plate: '', type: '', lat: '', lng: '', speed: '', status: '' });
             setIsModalOpen(false);
+            setSelectedVehicle(null)
         } catch (error) {
             console.error('Erro ao editar veículo:', error);
         }
@@ -156,10 +158,19 @@ const Vehicle = () => {
                 <form onSubmit={selectedVehicle ? handleEditVehicle : handleAddVehicle}>
                     <div className="mb-4">
                         <label htmlFor="plate" className="block text-sm font-medium text-motoraDarkBlue">Placa</label>
-                        <input type="text" id="plate" name="plate" required defaultValue={selectedVehicle?.plate || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="plate" name="plate" maxlength="7" required defaultValue={selectedVehicle?.plate || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                         
                         <label htmlFor="type" className="block text-sm font-medium text-motoraDarkBlue">Tipo</label>
-                        <input type="text" id="type" name="type" required defaultValue={selectedVehicle?.type || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <select
+                        id="type"
+                        name="type"
+                        defaultValue={selectedVehicle?.status}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                        >
+                        <option value="bus">ÔNIBUS</option>
+                        <option value="truck">CAMINHÃO</option>
+                        <option value="car">CARRO</option>
+                        </select>
                     
                         <label htmlFor="lat" className="block text-sm font-medium text-motoraDarkBlue">Latitude</label>
                         <input type="number" id="lat" name="lat" defaultValue={selectedVehicle?.lat || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
@@ -168,10 +179,18 @@ const Vehicle = () => {
                         <input type="number" id="lng" name="lng" defaultValue={selectedVehicle?.lng || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     
                         <label htmlFor="speed" className="block text-sm font-medium text-motoraDarkBlue">Velocidade</label>
-                        <input type="number" id="speed" name="speed" defaultValue={selectedVehicle?.speed || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="number" id="speed" name="speed" maxlength="3" defaultValue={selectedVehicle?.speed || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     
                         <label htmlFor="status" className="block text-sm font-medium text-motoraDarkBlue">Status</label>
-                        <input type="text" id="status" name="status" defaultValue={selectedVehicle?.status || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <select
+                        id="status"
+                        name="status"
+                        defaultValue={selectedVehicle?.status}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                        >
+                        <option value="stopped">PARADO</option>
+                        <option value="moving">EM MOVIMENTO</option>
+                        </select>
                     </div>
                     <button type="submit" className="mt-2 w-full bg-motoraDarkBlue text-white rounded-md p-2 hover:bg-motoraLightBlue">
                         {selectedVehicle ? 'Salvar Alterações' : 'Adicionar'}

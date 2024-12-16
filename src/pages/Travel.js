@@ -1,8 +1,8 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
-import Footer from './Footer';
-import FloatButton from './FloatButton';
-import ModalAdd from './ModalAdd';
+import Footer from '../components/Footer';
+import FloatButton from '../components/FloatButton';
+import ModalAdd from '../components/ModalAdd';
 
 const Travel = () => {
     const [travels, setTravels] = useState([]);
@@ -158,10 +158,10 @@ const Travel = () => {
                         <input type="number" id="driverId" name="driverId" required defaultValue={selectedTravel?.driverId || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                         
                         <label htmlFor="vehicleId" className="block text-sm font-medium text-motoraDarkBlue">Veículo</label>
-                        <input type="number" id="vehicleId" name="vehicleId" defaultValue={selectedTravel?.vehicleId || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="number" id="vehicleId" required name="vehicleId" defaultValue={selectedTravel?.vehicleId || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     
                         <label htmlFor="start" className="block text-sm font-medium text-motoraDarkBlue">Início</label>
-                        <input type="text" id="start" name="start" defaultValue={selectedTravel?.start || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="start" name="start" required defaultValue={selectedTravel?.start || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                         
                         <label htmlFor="end" className="block text-sm font-medium text-motoraDarkBlue">Final</label>
                         <input type="text" id="end" name="end" defaultValue={selectedTravel?.end || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>

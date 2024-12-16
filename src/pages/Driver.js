@@ -1,8 +1,8 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
-import Footer from './Footer';
-import FloatButton from './FloatButton';
-import ModalAdd from './ModalAdd';
+import Footer from '../components/Footer';
+import FloatButton from '../components/FloatButton';
+import ModalAdd from '../components/ModalAdd';
 
 const Driver = () => {
     const [drivers, setdrivers] = useState([]);
@@ -53,6 +53,7 @@ const Driver = () => {
             setdrivers((prevdrivers) => [...prevdrivers, addedDriver]); 
             setFormData({ name: '', cpf: '', cnh: '', status: '' });
             setIsModalOpen(false); 
+            setselectedDriver(null)
         } catch (error) {
             console.error('Erro ao adicionar motorista:', error);
         }
@@ -85,6 +86,7 @@ const Driver = () => {
             setdrivers(newdrivers);
             setFormData({ name: '', cpf: '', cnh: '', status: '' });
             setIsModalOpen(false);
+            setselectedDriver(null)
         } catch (error) {
             console.error('Erro ao editar motorista:', error);
         }
@@ -150,17 +152,25 @@ const Driver = () => {
                 <form onSubmit={selectedDriver ? handleEditDriver : handleAddDriver}>
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-sm font-medium text-motoraDarkBlue">Nome</label>
-                        <input type="text" id="name" name="name" required defaultValue={selectedDriver?.name || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="name" name="name" maxlength="80" required defaultValue={selectedDriver?.name || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                         
                         <label htmlFor="cpf" className="block text-sm font-medium text-motoraDarkBlue">CPF</label>
-                        <input type="text" id="cpf" name="cpf" defaultValue={selectedDriver?.cpf || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="text" id="cpf" name="cpf" maxlength="11" required defaultValue={selectedDriver?.cpf || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     
                         <label htmlFor="cnh" className="block text-sm font-medium text-motoraDarkBlue">CNH</label>
-                        <input type="number" id="cnh" name="cnh" defaultValue={selectedDriver?.cnh || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
+                        <input type="number" id="cnh" maxlength="9" name="cnh" required defaultValue={selectedDriver?.cnh || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
                     
                         <label htmlFor="status" className="block text-sm font-medium text-motoraDarkBlue">Status</label>
-                        <input type="text" id="status" name="status" defaultValue={selectedDriver?.status || ''} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"/>
-                    </div>
+                        <select
+                        id="status"
+                        name="status"
+                        defaultValue={selectedDriver?.status}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                        >
+                        <option value="idle">PARADO</option>
+                        <option value="driving">DIRIGINDO</option>
+                        </select>
+                        </div>
                     <button type="submit" className="mt-2 w-full bg-motoraDarkBlue text-white rounded-md p-2 hover:bg-motoraLightBlue">
                         {selectedDriver ? 'Salvar Alterações' : 'Adicionar'}
                     </button>

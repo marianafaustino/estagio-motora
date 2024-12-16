@@ -1,8 +1,8 @@
 import './App.css';
-import Driver from './components/Driver';
+import Driver from './pages/Driver';
 import Navbar from './components/Navbar';
-import Travel from './components/Travel';
-import Vehicle from './components/Vehicle';
+import Travel from './pages/Travel';
+import Vehicle from './pages/Vehicle';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
