@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Introdução ao Projeto
+Este projeto foi desenvolvido como parte do processo seletivo para estágio em desenvolvimento front-end. O objetivo era criar uma aplicação que permitisse gerenciar veículos, motoristas e viagens, incluindo funcionalidades de listagem, adição, edição e exclusão.
+# Descrição do Projeto
+A aplicação foi construída utilizando React e Tailwind CSS. Ela consiste em três principais entidades: veículos, motoristas e viagens. Cada entidade tem uma tabela para listagem, um botão flutuante para adicionar novos registros e a capacidade de editar e excluir registros existentes através de modais.
+# Funcionalidades Implementadas
+### Listagem de Veículos, Motoristas e Viagens: 
+A aplicação busca dados de veículos, motoristas e viagens de uma API e os exibe em tabelas.
+### Adição de Veículos, Motoristas e Viagens: 
+Um botão flutuante permite adicionar novos registros, que são enviados para a API.
+### Edição de Veículos, Motoristas e Viagens: 
+Cada registro pode ser editado através de um modal que atualiza os dados na API.
+### Exclusão de Veículos, Motoristas e Viagens: 
+Cada registro pode ser excluído com um botão de exclusão.
+### Atualizações em Tempo Real: 
+Utilizei WebSockets para exibir atualizações em tempo real, usando um badge com um ícone de sino para notificar o usuário sobre novas atualizações.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Melhorias Futuras:
+## Durante o desenvolvimento deste projeto, identifiquei algumas áreas que eu poderia trabalhar melhor:
+### Validação de Formulários: 
+Como, por exemplo, verificar se o ID do motorista que foi informado no formulário realmente é válido.
+### Responsividade: 
+Embora o projeto seja responsivo, ajustes adicionais poderiam ser feitos para garantir uma melhor experiência em dispositivos móveis ou em tamanhos de tela variados.
+### Estilização Consistente: 
+Embora o Tailwind CSS tenha sido usado para estilizar o projeto, uma revisão para garantir que todos os componentes seguem um padrão consistente de estilização seria legal.
+### Documentação Adicional: 
+Adicionar documentação mais detalhada sobre como cada componente funciona e como eles interagem poderia ajudar outros desenvolvedores a entender melhor o projeto.
+### Componentização: 
+Criar componentes reutilizáveis para elementos como inputs, botões e outros componentes de interface poderia melhorar a modularidade e a manutenção do código.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Introdução ao Create React App
+Este projeto foi inicializado com o Create React App.
+Scripts Disponíveis no diretório do projeto, você pode executar:
+### npm start: 
+Executa o aplicativo no modo de desenvolvimento. Abra http://localhost:3000 para visualizá-lo no seu navegador. A página será recarregada quando você fizer alterações. Você também pode ver erros de lint no console.
+### npm test: 
+Inicia o executor de teste no modo de observação interativo. Veja a seção sobre execução de testes para mais informações.
+### npm run build: 
+Cria o aplicativo para produção na pasta de compilação. Ele agrupa corretamente o React no modo de produção e otimiza a compilação para o melhor desempenho. A compilação é minimizada e os nomes de arquivo incluem os hashes. Seu aplicativo está pronto para ser implantado!
